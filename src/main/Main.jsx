@@ -3,12 +3,43 @@ import React, { useEffect, useState } from 'react'
 function Main() {
   const [seconds, setSeconds] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0); 
+  const [sec, setSec] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+
+  // Timer
+  const inputValueHour = (e) => {
+    setHours(e.target.value);
+  }
+  const inputValueMinutes = (e) => {
+    setMinutes(e.target.value);
+  }
+
+  const inputValueSec = (e) => {
+    setSec(e.target.value);
+  }
+  // 
+
+  const handleActive = () => {
+    setIsActive(!isActive);
+  }
 
   const startStopWatch = () => {
     setIsClicked(!isClicked);
   }
+
+  const stopStopWatch = () => {
+    setIsClicked(false);
+  }
+
+  const resetStopWatch = () => {
+    setIsClicked(false);
+    setSeconds(0);
+  }
+
   useEffect(() => {
-    let stopWatch = null;
+    let stopWatch = 0;
 
     if (isClicked) {
       stopWatch = setInterval(() => {
@@ -32,25 +63,37 @@ function Main() {
               <h2 className="text-2xl font-semibold text-gray-600 text-center mb-4">Timer</h2>
               <div className="flex justify-center items-center space-x-4 mb-6">
                 <input
+                  min="0"
+                  max="59"
                   type="number"
                   placeholder="HH"
+                  value={hours}
+                  onChange={inputValueHour}
                   className="w-20 p-2 border border-gray-300 rounded text-center text-lg"
                 />
                 <span className="text-xl font-semibold text-gray-600">:</span>
                 <input
+                  min="0"
+                  max="59"
                   type="number"
                   placeholder="MM"
+                  value={minutes}
+                  onChange={inputValueMinutes}
                   className="w-20 p-2 border border-gray-300 rounded text-center text-lg"
                 />
                 <span className="text-xl font-semibold text-gray-600">:</span>
                 <input
+                  min="0"
+                  max="59"
                   type="number"
                   placeholder="SS"
+                  value={sec}
+                  onChange={inputValueSec}
                   className="w-20 p-2 border border-gray-300 rounded text-center text-lg"
                 />
               </div>
               <div className="flex justify-center space-x-4">
-                <button className="bg-green-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-green-600 transition">
+                <button onClick={handleActive} className="bg-green-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-green-600 transition">
                   Start
                 </button>
                 <button className="bg-red-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-red-600 transition">
@@ -72,10 +115,10 @@ function Main() {
                 <button onClick={startStopWatch} className="bg-blue-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-blue-600 transition">
                   Start
                 </button>
-                <button onClick={} className="bg-yellow-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-yellow-600 transition">
+                <button onClick={stopStopWatch} className="bg-yellow-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-yellow-600 transition">
                   Stop
                 </button>
-                <button className="bg-red-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-red-600 transition">
+                <button onClick={resetStopWatch} className="bg-red-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-red-600 transition">
                   Reset
                 </button>
               </div>
