@@ -7,6 +7,46 @@ function Main() {
   const [minutes, setMinutes] = useState(0); 
   const [sec, setSec] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(0);
+
+  const calculateTotalSeconds = () => {
+    return parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(sec);
+  };
+
+  useEffect(() => {
+    let timer = null;
+    if (isActive && remainingTime > 0) {
+      timer = setInterval(() => {
+        setRemainingTime((prev) => prev - 1);
+      }, 1000);
+    } else if (remainingTime === 0) {
+      setIsActive(false); 
+    }
+  
+    return () => clearInterval(timer);
+  }, [isActive, remainingTime]);
+  
+  const handleStartTimer = () => {
+    const totalSeconds = calculateTotalSeconds();
+    setRemainingTime(totalSeconds);
+    setIsActive(true);
+  };
+  
+  const handleResetTimer = () => {
+    setIsActive(false);
+    setRemainingTime(0);
+    setHours(0);
+    setMinutes(0);
+    setSec(0);
+  };
+
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  };
+  
 
   // Timer
   const inputValueHour = (e) => {
@@ -21,10 +61,6 @@ function Main() {
   }
   // 
 
-  const handleActive = () => {
-    setIsActive(!isActive);
-  }
-
   const startStopWatch = () => {
     setIsClicked(!isClicked);
   }
@@ -37,6 +73,10 @@ function Main() {
     setIsClicked(false);
     setSeconds(0);
   }
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => , 1000);
+  // });
 
   useEffect(() => {
     let stopWatch = 0;
@@ -51,7 +91,6 @@ function Main() {
 
     return () => clearInterval(stopWatch);
   }, [isClicked]);
-
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -92,11 +131,14 @@ function Main() {
                   className="w-20 p-2 border border-gray-300 rounded text-center text-lg"
                 />
               </div>
+              <div className='flex justify-center items-center'>
+              {formatTime(remainingTime)}
+              </div>
               <div className="flex justify-center space-x-4">
-                <button onClick={handleActive} className="bg-green-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-green-600 transition">
+                <button onClick={handleStartTimer} className="bg-green-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-green-600 transition">
                   Start
                 </button>
-                <button className="bg-red-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-red-600 transition">
+                <button onClick={handleResetTimer} className="bg-red-500 text-white font-semibold py-2 px-6 rounded shadow hover:bg-red-600 transition">
                   Reset
                 </button>
               </div>
