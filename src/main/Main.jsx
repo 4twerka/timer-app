@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 function Main() {
   const [seconds, setSeconds] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0); 
-  const [sec, setSec] = useState(0);
+  const [hours, setHours] = useState();
+  const [minutes, setMinutes] = useState(); 
+  const [sec, setSec] = useState();
   const [isActive, setIsActive] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
 
